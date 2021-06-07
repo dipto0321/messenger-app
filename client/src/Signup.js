@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { withStyles, useTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Box,
@@ -25,13 +25,15 @@ const styles = (theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "100vw 100vh",
     width: "100vw",
-    height: "100vh",
+    height: "65vh",
     [theme.breakpoints.up("sm")]: {
       backgroundSize: "100vw",
+      height: "95vh",
     },
     [theme.breakpoints.up("md")]: {
       backgroundSize: "50vw",
       width: "50vw",
+      height: "100vh",
     },
     [theme.breakpoints.up("lg")]: {
       backgroundSize: "40vw",
@@ -39,45 +41,45 @@ const styles = (theme) => ({
     },
   },
   boxImage: {
-    width: "16vw",
+    width: "4rem",
     position: "relative",
-    top: -80,
+    top: 64,
     [theme.breakpoints.up("sm")]: {
-      top: 95,
-      width: "15vw",
+      top: 120,
+      width: "6.25rem",
     },
     [theme.breakpoints.up("md")]: {
       top: -55,
-      width: "8vw",
+      width: "5rem",
     },
     [theme.breakpoints.up("lg")]: {
-      top: 0,
-      width: "6vw",
+      top: 10,
+      width: "7.5rem",
     },
   },
   boxText: {
     fontSize: "1.5rem",
     color: "#fff",
     textAlign: "center",
-    width: "70vw",
+    width: 300,
     padding: 10,
     marginTop: 10,
     position: "relative",
-    top: -70,
+    top: 70,
     [theme.breakpoints.up("sm")]: {
       fontSize: "2.5rem",
-      top: 90,
-      width: "60vw",
+      top: 130,
+      width: 415,
     },
     [theme.breakpoints.up("md")]: {
       fontSize: "2rem",
-      top: -30,
-      width: "35vw",
+      top: -40,
+      width: 340,
     },
     [theme.breakpoints.up("lg")]: {
-      fontSize: "2.8rem",
+      fontSize: "2rem",
       top: 0,
-      width: "35vw",
+      width: 340,
     },
   },
   rightBoxContainer: {
@@ -89,7 +91,7 @@ const styles = (theme) => ({
     },
     [theme.breakpoints.up("lg")]: {
       width: "54vw",
-      padding: "2.5rem",
+      padding: "2rem",
     },
   },
   button: {
@@ -108,9 +110,11 @@ const styles = (theme) => ({
     padding: "0.625rem 2.5rem",
     [theme.breakpoints.up("sm")]: {
       padding: "0.625rem 4.5rem",
+      fontSize: "1rem",
     },
     [theme.breakpoints.up("lg")]: {
-      padding: "0.625rem 6.5rem",
+      padding: "0.625rem 7.5rem",
+      fontSize: "1.25rem",
     },
   },
   text: {
