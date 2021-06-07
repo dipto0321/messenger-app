@@ -20,7 +20,7 @@ const styles = (theme) => ({
   root: {
     height: "100vh",
   },
-  boxContainer: {
+  leftBoxContainer: {
     backgroundImage: `linear-gradient(rgba(58, 141, 255, 0.85), rgba(134, 185, 255, 0.85)),url(${backgroundImg})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "100vw 100vh",
@@ -80,6 +80,70 @@ const styles = (theme) => ({
       width: "35vw",
     },
   },
+  rightBoxContainer: {
+    width: "100vw",
+    padding: 20,
+    [theme.breakpoints.up("md")]: {
+      width: "40vw",
+      padding: "2.5rem",
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: "54vw",
+      padding: "2.5rem",
+    },
+  },
+  button: {
+    color: "#3A8DFF",
+    backgroundColor: "#fff",
+    fontSize: 15,
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: "#3A8DFF",
+    },
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1.25rem",
+    },
+  },
+  buttonSubmit: {
+    padding: "0.625rem 2.5rem",
+    [theme.breakpoints.up("sm")]: {
+      padding: "0.625rem 4.5rem",
+    },
+    [theme.breakpoints.up("lg")]: {
+      padding: "0.625rem 6.5rem",
+    },
+  },
+  text: {
+    color: "#B0B0B0",
+    padding: 10,
+    fontSize: 14,
+    marginRight: 10,
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1.2rem",
+    },
+  },
+  headLine: {
+    fontWeight: "600",
+    fontSize: 16,
+    textAlign: "start",
+    marginBottom: "1rem",
+    [theme.breakpoints.up("sm")]: {
+      fontSize: "1.6rem",
+    },
+  },
+  formContentContainer: {
+    margin: "1.5rem 0",
+    textAlign: "center",
+    [theme.breakpoints.up("sm")]: {
+      margin: "5rem 0",
+    },
+    [theme.breakpoints.up("lg")]: {
+      margin: "7rem 0",
+    },
+  },
+  formControlContainer: {
+    marginBottom: "1.5rem",
+  },
 });
 
 const Login = (props) => {
@@ -87,7 +151,19 @@ const Login = (props) => {
   const {
     user,
     register,
-    classes: { root, boxContainer, boxImage, boxText },
+    classes: {
+      root,
+      leftBoxContainer,
+      boxImage,
+      boxText,
+      rightBoxContainer,
+      button,
+      text,
+      formControlContainer,
+      buttonSubmit,
+      headLine,
+      formContentContainer,
+    },
   } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
 
@@ -113,7 +189,7 @@ const Login = (props) => {
   return (
     <Grid className={root} container>
       <Box
-        className={boxContainer}
+        className={leftBoxContainer}
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -124,15 +200,30 @@ const Login = (props) => {
           Converse with anyone with any language
         </Typography>
       </Box>
-      <Box>
-        <Grid container item>
-          <Typography>Need to log in?</Typography>
-          <Button onClick={() => history.push("/login")}>Login</Button>
+      <Box className={rightBoxContainer}>
+        <Grid
+          container
+          item
+          alignItems="center"
+          style={{ margin: "15px 0", justifyContent: "flex-end" }}
+        >
+          <Typography className={text}>Already have an account?</Typography>
+          <Button
+            variant="contained"
+            size="large"
+            className={button}
+            onClick={() => history.push("/login")}
+          >
+            Login
+          </Button>
         </Grid>
         <form onSubmit={handleRegister}>
-          <Grid>
-            <Grid>
-              <FormControl>
+          <Grid className={formContentContainer}>
+            <Typography variant="h4" className={headLine}>
+              Create an account
+            </Typography>
+            <Grid className={formControlContainer}>
+              <FormControl fullWidth>
                 <TextField
                   aria-label="username"
                   label="Username"
@@ -142,8 +233,8 @@ const Login = (props) => {
                 />
               </FormControl>
             </Grid>
-            <Grid>
-              <FormControl>
+            <Grid className={formControlContainer}>
+              <FormControl fullWidth>
                 <TextField
                   label="E-mail address"
                   aria-label="e-mail address"
@@ -153,8 +244,8 @@ const Login = (props) => {
                 />
               </FormControl>
             </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
+            <Grid className={formControlContainer}>
+              <FormControl error={!!formErrorMessage.confirmPassword} fullWidth>
                 <TextField
                   aria-label="password"
                   label="Password"
@@ -168,8 +259,8 @@ const Login = (props) => {
                 </FormHelperText>
               </FormControl>
             </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
+            <Grid className={formControlContainer}>
+              <FormControl error={!!formErrorMessage.confirmPassword} fullWidth>
                 <TextField
                   label="Confirm Password"
                   aria-label="confirm password"
@@ -183,7 +274,13 @@ const Login = (props) => {
                 </FormHelperText>
               </FormControl>
             </Grid>
-            <Button type="submit" variant="contained" size="large">
+            <Button
+              type="submit"
+              className={buttonSubmit}
+              variant="contained"
+              color="primary"
+              size="large"
+            >
               Create
             </Button>
           </Grid>
