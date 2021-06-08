@@ -8,6 +8,18 @@ import {
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
+axios.interceptors.request.use(async function (config) {
+  const token = await sessionStorage.getItem("messenger-token");
+  config.headers["X-CSRF-Token"] = token;
+
+  return config;
+});
+
+export const getCsrfToken = async () => {
+  const { data } = await axios.get("/auth/csrf-token");
+  sessionStorage.setItem("messenger-token", data.csrfToken);
+};
+
 // USER THUNK CREATORS
 
 export const fetchUser = () => async (dispatch) => {
