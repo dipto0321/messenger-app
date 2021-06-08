@@ -77,8 +77,8 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.delete("/logout", (req, res, next) => {
-  res.clearCookie("token");
-  res.sendStatus(204);
+  // res.clearCookie("token");
+  res.status(204).clearCookie("token").send("Logged out success");
 });
 
 router.get("/user", (req, res, next) => {
@@ -87,6 +87,10 @@ router.get("/user", (req, res, next) => {
   } else {
     return res.json({});
   }
+});
+
+router.get("/csrf-token", (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
 });
 
 module.exports = router;

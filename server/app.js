@@ -4,6 +4,7 @@ const { join } = require("path");
 const logger = require("morgan");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const csrf = require("csurf");
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const db = require("./db");
@@ -15,10 +16,15 @@ const { json, urlencoded } = express;
 
 const app = express();
 
+const csrfProtection = csrf({
+  cookie: true,
+});
+
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(csrfProtection);
 app.use(express.static(join(__dirname, "public")));
 
 app.use(function (req, res, next) {
