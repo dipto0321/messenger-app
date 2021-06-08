@@ -98,11 +98,19 @@ const sendMessage = (data, body) => {
 export const postMessage = (body) => async (dispatch) => {
   try {
     const data = await saveMessage(body);
+    console.log(
+      "🚀 ~ file: thunkCreators.js ~ line 99 ~ postMessage ~ data",
+      data
+    );
+    console.log(
+      "🚀 ~ file: thunkCreators.js ~ line 100 ~ postMessage ~ body",
+      body
+    );
 
     if (!body.conversationId) {
       dispatch(addConversation(body.recipientId, data.message));
     } else {
-      dispatch(setNewMessage(data.message));
+      dispatch(setNewMessage(data.message, data.sender));
     }
 
     await sendMessage(data, body);
