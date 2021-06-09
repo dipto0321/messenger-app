@@ -31,10 +31,6 @@ const Sidebar = (props) => {
       <Search handleChange={handleChange} />
       {conversations
         .filter((conversation) => {
-          console.log(
-            "🚀 ~ file: Sidebar.js ~ line 34 ~ .filter ~ conversation",
-            conversation
-          );
           return conversation.otherUser.username.includes(searchTerm);
         })
         .map((conversation) => {
