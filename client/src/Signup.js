@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Box,
@@ -13,79 +12,9 @@ import {
 } from "@material-ui/core";
 
 import { LandingPageSidebar } from "./components";
-import { register } from "./store/utils/thunkCreators";
+import { authUseStyles } from "./stylesHook";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-  },
-  rightBoxContainer: {
-    width: "100vw",
-    padding: 20,
-    [theme.breakpoints.up("md")]: {
-      width: "40vw",
-      padding: "2.5rem",
-    },
-    [theme.breakpoints.up("lg")]: {
-      width: "54vw",
-      padding: "2rem",
-    },
-  },
-  button: {
-    color: "#3A8DFF",
-    backgroundColor: "#fff",
-    fontSize: 15,
-    "&:hover": {
-      color: "#fff",
-      backgroundColor: "#3A8DFF",
-    },
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "1.25rem",
-    },
-  },
-  buttonSubmit: {
-    padding: "0.625rem 2.5rem",
-    [theme.breakpoints.up("sm")]: {
-      padding: "0.625rem 4.5rem",
-      fontSize: "1rem",
-    },
-    [theme.breakpoints.up("lg")]: {
-      padding: "0.625rem 7.5rem",
-      fontSize: "1.25rem",
-    },
-  },
-  text: {
-    color: "#B0B0B0",
-    padding: 10,
-    fontSize: 14,
-    marginRight: 10,
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "1.2rem",
-    },
-  },
-  headLine: {
-    fontWeight: "600",
-    fontSize: 16,
-    textAlign: "start",
-    marginBottom: "1rem",
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "1.6rem",
-    },
-  },
-  formContentContainer: {
-    margin: "1.5rem 0",
-    textAlign: "center",
-    [theme.breakpoints.up("sm")]: {
-      margin: "5rem 0",
-    },
-    [theme.breakpoints.up("lg")]: {
-      margin: "7rem 0",
-    },
-  },
-  formControlContainer: {
-    marginBottom: "1.5rem",
-  },
-}));
+import { register } from "./store/utils/thunkCreators";
 
 const Signup = () => {
   const history = useHistory();
@@ -98,7 +27,7 @@ const Signup = () => {
     buttonSubmit,
     headLine,
     formContentContainer,
-  } = useStyles();
+  } = authUseStyles();
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
