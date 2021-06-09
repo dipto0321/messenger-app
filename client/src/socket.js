@@ -6,7 +6,11 @@ import {
   addOnlineUser,
 } from "./store/conversations";
 
-const socket = io(window.location.origin);
+const ENDPOINT = "ws://localhost:3000";
+
+const socket = io(ENDPOINT, {
+  withCredentials: true,
+});
 
 socket.on("connect", () => {
   console.log("connected to server");
