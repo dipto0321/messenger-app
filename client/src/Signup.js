@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Box,
@@ -11,76 +11,13 @@ import {
   TextField,
   FormHelperText,
 } from "@material-ui/core";
+
+import { LandingPageSidebar } from "./components";
 import { register } from "./store/utils/thunkCreators";
 
-import backgroundImg from "./assets/bg-img.png";
-import bubbleImg from "./assets/bubble.svg";
-
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
-  },
-  leftBoxContainer: {
-    backgroundImage: `linear-gradient(rgba(58, 141, 255, 0.85), rgba(134, 185, 255, 0.85)),url(${backgroundImg})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "100vw 100vh",
-    width: "100vw",
-    height: "65vh",
-    [theme.breakpoints.up("sm")]: {
-      backgroundSize: "100vw",
-      height: "95vh",
-    },
-    [theme.breakpoints.up("md")]: {
-      backgroundSize: "50vw",
-      width: "50vw",
-      height: "100vh",
-    },
-    [theme.breakpoints.up("lg")]: {
-      backgroundSize: "40vw",
-      width: "40vw",
-    },
-  },
-  boxImage: {
-    width: "4rem",
-    position: "relative",
-    top: 64,
-    [theme.breakpoints.up("sm")]: {
-      top: 120,
-      width: "6.25rem",
-    },
-    [theme.breakpoints.up("md")]: {
-      top: -55,
-      width: "5rem",
-    },
-    [theme.breakpoints.up("lg")]: {
-      top: 10,
-      width: "7.5rem",
-    },
-  },
-  boxText: {
-    fontSize: "1.5rem",
-    color: "#fff",
-    textAlign: "center",
-    width: 300,
-    padding: 10,
-    marginTop: 10,
-    position: "relative",
-    top: 70,
-    [theme.breakpoints.up("sm")]: {
-      fontSize: "2.5rem",
-      top: 130,
-      width: 415,
-    },
-    [theme.breakpoints.up("md")]: {
-      fontSize: "2rem",
-      top: -40,
-      width: 340,
-    },
-    [theme.breakpoints.up("lg")]: {
-      fontSize: "2rem",
-      top: 0,
-      width: 340,
-    },
   },
   rightBoxContainer: {
     width: "100vw",
@@ -148,27 +85,23 @@ const styles = (theme) => ({
   formControlContainer: {
     marginBottom: "1.5rem",
   },
-});
+}));
 
-const Login = (props) => {
+const Signup = () => {
   const history = useHistory();
   const {
-    user,
-    register,
-    classes: {
-      root,
-      leftBoxContainer,
-      boxImage,
-      boxText,
-      rightBoxContainer,
-      button,
-      text,
-      formControlContainer,
-      buttonSubmit,
-      headLine,
-      formContentContainer,
-    },
-  } = props;
+    root,
+    rightBoxContainer,
+    button,
+    text,
+    formControlContainer,
+    buttonSubmit,
+    headLine,
+    formContentContainer,
+  } = useStyles();
+
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const [formErrorMessage, setFormErrorMessage] = useState({});
 
   const handleRegister = async (event) => {
@@ -182,8 +115,7 @@ const Login = (props) => {
       setFormErrorMessage({ confirmPassword: "Passwords must match" });
       return;
     }
-
-    await register({ username, email, password });
+    await dispatch(register({ username, email, password }));
   };
 
   if (user.id) {
@@ -192,18 +124,7 @@ const Login = (props) => {
 
   return (
     <Grid className={root} container>
-      <Box
-        className={leftBoxContainer}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <img className={boxImage} src={bubbleImg} alt="bubble" />
-        <Typography className={boxText}>
-          Converse with anyone with any language
-        </Typography>
-      </Box>
+      <LandingPageSidebar />
       <Box className={rightBoxContainer}>
         <Grid
           container
@@ -294,21 +215,4 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    register: (credentials) => {
-      dispatch(register(credentials));
-    },
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Login));
+export default Signup;
