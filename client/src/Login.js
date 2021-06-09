@@ -17,7 +17,6 @@ const Login = (props) => {
   const history = useHistory();
 
   const {
-    root,
     rightBoxContainer,
     button,
     text,
@@ -43,7 +42,7 @@ const Login = (props) => {
   }
 
   return (
-    <Grid className={root} container>
+    <Grid container>
       <LandingPageSidebar />
       <Box className={rightBoxContainer}>
         <Grid

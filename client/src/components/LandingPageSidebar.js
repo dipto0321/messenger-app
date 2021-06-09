@@ -12,20 +12,21 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `linear-gradient(rgba(58, 141, 255, 0.85), rgba(134, 185, 255, 0.85)),url(${backgroundImg})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "100vw 100vh",
-    width: "100vw",
-    height: "65vh",
+    display: "none",
     [theme.breakpoints.up("sm")]: {
       backgroundSize: "100vw",
       height: "95vh",
+      display: "flex",
+      flexBasis: "100%",
     },
     [theme.breakpoints.up("md")]: {
       backgroundSize: "50vw",
-      width: "50vw",
       height: "100vh",
+      flexBasis: "50%",
     },
     [theme.breakpoints.up("lg")]: {
       backgroundSize: "40vw",
-      width: "40vw",
+      flexBasis: "40%",
     },
   },
   boxImage: {
