@@ -1,20 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-  },
   rightBoxContainer: {
-    width: "100vw",
     padding: 20,
-    [theme.breakpoints.up("md")]: {
-      width: "40vw",
-      padding: "2.5rem",
-    },
-    [theme.breakpoints.up("lg")]: {
-      width: "54vw",
-      padding: "2rem",
-    },
+    flexGrow: 1,
   },
   button: {
     color: "#3A8DFF",

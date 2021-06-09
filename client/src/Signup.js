@@ -19,7 +19,6 @@ import { register } from "./store/utils/thunkCreators";
 const Signup = () => {
   const history = useHistory();
   const {
-    root,
     rightBoxContainer,
     button,
     text,
@@ -52,7 +51,7 @@ const Signup = () => {
   }
 
   return (
-    <Grid className={root} container>
+    <Grid container>
       <LandingPageSidebar />
       <Box className={rightBoxContainer}>
         <Grid
