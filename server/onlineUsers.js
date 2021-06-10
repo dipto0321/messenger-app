@@ -1,11 +1,15 @@
 let onlineUsers = [];
 const addOnlineUser = (userId, socketId) => {
-  !onlineUsers.some((user) => user.userId === userId) &&
-    onlineUsers.push({ userId, socketId });
+  let userExist = false;
+  if (onlineUsers.length > 0) {
+    userExist = onlineUsers.some((user) => user.userId === userId);
+  }
+
+  if (!userExist) onlineUsers.push({ userId, socketId });
 };
 
 const removeOnlineUser = (userId) => {
-  onlineUsers = onlineUsers.filter((user) => user.socketId !== userId);
+  onlineUsers = onlineUsers.filter((user) => user.userId !== userId);
 };
 
 const getOnlineUser = (userId) => {
