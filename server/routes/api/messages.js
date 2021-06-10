@@ -50,7 +50,7 @@ router.get("/validConversation", async (req, res, next) => {
       senderId,
       recipientId
     );
-    const isValid = Object.entries(conversation).length !== 0;
+    const isValid = conversation && Object.entries(conversation).length !== 0;
     res.json({ isValid });
   } catch (error) {
     next(error);
