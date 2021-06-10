@@ -85,12 +85,29 @@ const saveMessage = async (body) => {
   return data;
 };
 
-const sendMessage = (data, body) => {
-  socket.emit("sendMessage", {
-    message: data.message,
+const validConversation = async (reqBody) => {
+  const { senderId, recipientId } = reqBody;
+  const {
+    data: { isValid },
+  } = await axios.get(
+    `/api/messages/validConversation?senderId=${senderId}&recipientId=${recipientId}`
+  );
+
+  return isValid;
+};
+
+const sendMessage = async (data, body) => {
+  const isValid = await validConversation({
+    senderId: data.message.senderId,
     recipientId: body.recipientId,
-    sender: data.sender,
   });
+  if (isValid) {
+    socket.emit("new-message", {
+      message: data.message,
+      recipientId: body.recipientId,
+      sender: data.sender,
+    });
+  }
 };
 
 // message format to send: {recipientId, text, conversationId}

@@ -43,4 +43,18 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+router.get("/validConversation", async (req, res, next) => {
+  try {
+    const { senderId, recipientId } = req.query;
+    let conversation = await Conversation.findConversation(
+      senderId,
+      recipientId
+    );
+    const isValid = Object.entries(conversation).length !== 0;
+    res.json({ isValid });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
