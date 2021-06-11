@@ -31,7 +31,6 @@ socket.on("connect", () => {
     );
   });
   socket.on("notify_other_on_read", (data) => {
-    console.log("🚀 ~ file: socket.js ~ line 29 ~ socket.on ~ data", data);
     store.dispatch(
       updateConversationMessage(data.conversationId, data.messageId)
     );

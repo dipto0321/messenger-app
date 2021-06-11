@@ -97,25 +97,32 @@ const validConversation = async (reqBody) => {
   return isValid;
 };
 
-const saveMessageSeen = async (messageId) => {
-  const { data } = await axios.post(
-    `/api/messages/updateSeenStatus?${messageId}`
+const sendMessage = async (data, body) => {
+  console.log(
+    "🚀 ~ file: thunkCreators.js ~ line 101 ~ sendMessage ~ data, body",
+    data,
+    body
+  );
+  socket.emit("sendMessage", {
+    message: data.message,
+    recipientId: body.recipientId,
+    sender: data.sender,
+  });
+};
+
+const saveMessageSeen = async (messageId, recipientId) => {
+  const { data } = await axios.put(
+    `/api/messages/updateSeenStatus?messageId=${messageId}&recipientId=${recipientId}`
   );
   return data;
 };
 
-const sendMessage = async (data, body) => {
-  const isValid = await validConversation({
-    senderId: data.message.senderId,
-    recipientId: body.recipientId,
-  });
-  if (isValid) {
-    socket.emit("new-message", {
-      message: data.message,
-      recipientId: body.recipientId,
-      sender: data.sender,
-    });
-  }
+const markAllAsRead = async (reqBody) => {
+  const { conversationId, recipientId } = reqBody;
+  const { data } = await axios.put(
+    `/api/messages/markAllRead?conversationId=${conversationId}&recipientId=${recipientId}`
+  );
+  return data;
 };
 
 // message format to send: {recipientId, text, conversationId}
@@ -129,7 +136,17 @@ export const postMessage = (body) => async (dispatch) => {
       dispatch(setNewMessage(data.message));
     }
 
-    sendMessage(data, body);
+    const isValid = await validConversation({
+      senderId: data.message.senderId,
+      recipientId: body.recipientId,
+    });
+    console.log(
+      "🚀 ~ file: thunkCreators.js ~ line 105 ~ sendMessage ~ isValid",
+      isValid
+    );
+    if (isValid) {
+      sendMessage(data, body);
+    }
   } catch (error) {
     console.error(error);
   }
@@ -147,14 +164,25 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
 export const readAllMessages = (reqBody) => async (dispatch) => {
   try {
     const { conversationId, recipientId } = reqBody;
-    const {
-      data: { updateStatus, lastMessageIdByOtherUser },
-    } = await axios.post(
-      `/api/messages/readAllMessages?conversationId=${conversationId}&recipientId=${recipientId}`
+    const { updateStatus, lastMessageIdByOtherUser } = await markAllAsRead(
+      reqBody
     );
 
-    if (updateStatus === "success") {
-      const response = saveMessageSeen(lastMessageIdByOtherUser);
+    console.log(
+      "🚀 ~ file: thunkCreators.js ~ line 168 ~ readAllMessages ~ updateStatus, lastMessageIdByOtherUser",
+      updateStatus,
+      lastMessageIdByOtherUser
+    );
+
+    if (
+      updateStatus &&
+      updateStatus === "success" &&
+      lastMessageIdByOtherUser
+    ) {
+      const response = await saveMessageSeen(
+        lastMessageIdByOtherUser,
+        recipientId
+      );
       console.log(
         "🚀 ~ file: thunkCreators.js ~ line 140 ~ readAllMessages ~ response",
         response
