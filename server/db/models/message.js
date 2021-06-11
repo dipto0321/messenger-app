@@ -29,13 +29,18 @@ Message.updateAll = async (
         senderId: recipientId,
         conversationId: conversationId,
       },
+      order: [["createdAt", "DESC"]],
     });
     messages.forEach(async (message) => {
       message[fieldToUpdate] = updateValue;
       await message.save({ fields: [fieldToUpdate] });
       await message.reload();
     });
-    return { updateStatus: "success" };
+
+    return {
+      updateStatus: "success",
+      lastMessageIdByOtherUser: messages[0].id,
+    };
   } catch (error) {
     return { updateStatus: "failed" };
   }

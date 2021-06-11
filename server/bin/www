@@ -58,6 +58,16 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("read-msg", (data) => {
+    const user = getOnlineUser(data.recipientId);
+    if (user) {
+      io.to(user.socketId).emit("notify_other_on_read", {
+        messageId: data.messageId,
+        conversationId: data.conversationId,
+      });
+    }
+  });
+
   socket.on("logout", (id) => {
     const user = getOnlineUser(id);
     if (user) {
