@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,21 +18,40 @@ const useStyles = makeStyles(() => ({
       cursor: "grab",
     },
   },
+  count: {
+    padding: "5px 11px",
+    backgroundColor: "#3A8DFF",
+    borderRadius: 20,
+    color: "#fff",
+    fontSize: "15px",
+    fontWeight: "bold",
+    marginRight: "1.5rem",
+    marginBottom: ".625rem",
+  },
 }));
 
 const Chat = ({ conversation }) => {
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
   const handleClick = async () => {
+    await dispatch(setActiveChat(conversation.otherUser.username));
     await dispatch(
       readAllMessages({
         conversationId: conversation.id,
         recipientId: conversation.otherUser.id,
       })
     );
-    await dispatch(setActiveChat(conversation.otherUser.username));
   };
 
-  const { root } = useStyles();
+  useEffect(() => {
+    if (conversation.unReadMessage > 0) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [conversation]);
+
+  const { root, count } = useStyles();
   const { photoUrl, username, online } = conversation.otherUser;
 
   return (
@@ -43,6 +63,7 @@ const Chat = ({ conversation }) => {
         sidebar={true}
       />
       <ChatContent conversation={conversation} />
+      {show && <span className={count}>{conversation.unReadMessage}</span>}
     </Box>
   );
 };

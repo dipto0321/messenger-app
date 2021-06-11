@@ -69,10 +69,13 @@ export const addConversation = (recipientId, newMessage) => {
   };
 };
 
-export const updateConversationUnReadCounter = (conversationId) => {
+export const updateConversationUnReadCounter = (
+  conversationId,
+  updateValue
+) => {
   return {
     type: UPDATE_CONVERSATION_UNREAD_COUNTER,
-    payload: { conversationId },
+    payload: { conversationId, updateValue },
   };
 };
 
@@ -103,7 +106,8 @@ const reducer = (state = [], action) => {
     case UPDATE_CONVERSATION_UNREAD_COUNTER:
       return updateConversationUnReadCounterInStore(
         state,
-        action.payload.conversationId
+        action.payload.conversationId,
+        action.payload.updateValue
       );
     default:
       return state;

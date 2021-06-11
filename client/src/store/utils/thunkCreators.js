@@ -147,7 +147,7 @@ export const readAllMessages = (reqBody) => async (dispatch) => {
     );
 
     if (updateStatus === "success") {
-      dispatch(updateConversationUnReadCounter(conversationId));
+      dispatch(updateConversationUnReadCounter(conversationId, 0));
     }
   } catch (error) {
     console.error(error);

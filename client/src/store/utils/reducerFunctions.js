@@ -84,9 +84,16 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 
 export const updateConversationUnReadCounterInStore = (
   state,
-  conversationId
+  conversationId,
+  updateValue
 ) => {
-  const index = state.findIndex((convo) => convo.id === conversationId);
-  state[index] = { ...state[index], unReadMessage: 0 };
-  return state;
+  return state.map((convo) => {
+    if (convo.id === conversationId) {
+      const count =
+        updateValue === 0 ? 0 : (convo.unReadMessage += updateValue);
+      return { ...convo, unReadMessage: count };
+    } else {
+      return convo;
+    }
+  });
 };

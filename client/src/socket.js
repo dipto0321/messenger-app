@@ -4,6 +4,7 @@ import {
   setNewMessage,
   removeOfflineUser,
   addOnlineUser,
+  updateConversationUnReadCounter,
 } from "./store/conversations";
 
 const ENDPOINT = "ws://localhost:3000";
@@ -24,6 +25,9 @@ socket.on("connect", () => {
   });
   socket.on("getMessage", (data) => {
     store.dispatch(setNewMessage(data.message, data.sender));
+    store.dispatch(
+      updateConversationUnReadCounter(data.message.conversationId, 1)
+    );
   });
 });
 
