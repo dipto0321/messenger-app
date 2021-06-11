@@ -61,19 +61,56 @@ router.get("/validConversation", async (req, res, next) => {
   }
 });
 
-router.post("/updateSeenStatus", async (req, res, next) => {
+router.put("/markAllRead", async (req, res, next) => {
   try {
-    const { messageId } = req.query;
+    const { conversationId, recipientId } = req.query;
+
+    const messages = await Message.findAll({
+      where: {
+        senderId: recipientId,
+        conversationId: conversationId,
+        readStatus: false,
+      },
+      order: [["createdAt", "DESC"]],
+    });
+
+    if (messages.length > 0) {
+      messages.forEach(async (message) => {
+        message.readStatus = true;
+        await message.save({ fields: ["readStatus"] });
+        await message.reload();
+      });
+      res.json({
+        updateStatus: "success",
+        lastMessageIdByOtherUser: messages[0].id,
+      });
+    } else {
+      res.json({});
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/updateSeenStatus", async (req, res, next) => {
+  try {
+    const { messageId, recipientId } = req.query;
+    console.log(
+      "🚀 ~ file: messages.js ~ line 98 ~ router.post ~ req.query",
+      req.query
+    );
 
     const oldLastMessage = await Message.findOne({
       where: {
         lastMessageSeen: true,
+        senderId: recipientId,
       },
     });
     console.log(
-      "🚀 ~ file: message.js ~ line 56 ~ Message.update= ~ oldLastMessage",
+      "🚀 ~ file: messages.js ~ line 104 ~ router.post ~ oldLastMessage",
       oldLastMessage
     );
+
     if (oldLastMessage) {
       oldLastMessage.lastMessageSeen = false;
       await oldLastMessage.save({ fields: ["lastMessageSeen"] });

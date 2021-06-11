@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
   socket.on("logout", (id) => {
     const user = getOnlineUser(id);
     if (user) {
-      removeOnlineUser(user.userId);
+      removeOnlineUser({ userId: user.userId });
       socket.broadcast.emit("remove-offline-user", id);
     }
   });
