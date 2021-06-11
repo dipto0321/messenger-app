@@ -97,6 +97,13 @@ const validConversation = async (reqBody) => {
   return isValid;
 };
 
+const saveMessageSeen = async (messageId) => {
+  const { data } = await axios.post(
+    `/api/messages/updateSeenStatus?${messageId}`
+  );
+  return data;
+};
+
 const sendMessage = async (data, body) => {
   const isValid = await validConversation({
     senderId: data.message.senderId,
@@ -147,6 +154,11 @@ export const readAllMessages = (reqBody) => async (dispatch) => {
     );
 
     if (updateStatus === "success") {
+      const response = saveMessageSeen(lastMessageIdByOtherUser);
+      console.log(
+        "🚀 ~ file: thunkCreators.js ~ line 140 ~ readAllMessages ~ response",
+        response
+      );
       socket.emit("read-msg", {
         messageId: lastMessageIdByOtherUser,
         recipientId,

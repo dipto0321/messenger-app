@@ -61,4 +61,42 @@ router.get("/validConversation", async (req, res, next) => {
   }
 });
 
+router.post("/updateSeenStatus", async (req, res, next) => {
+  try {
+    const { messageId } = req.query;
+
+    const oldLastMessage = await Message.findOne({
+      where: {
+        lastMessageSeen: true,
+      },
+    });
+    console.log(
+      "🚀 ~ file: message.js ~ line 56 ~ Message.update= ~ oldLastMessage",
+      oldLastMessage
+    );
+    if (oldLastMessage) {
+      oldLastMessage.lastMessageSeen = false;
+      await oldLastMessage.save({ fields: ["lastMessageSeen"] });
+      await oldLastMessage.reload();
+    }
+
+    const newLastMessage = await Message.findOne({
+      where: {
+        id: messageId,
+      },
+    });
+
+    if (newLastMessage) {
+      newLastMessage.lastMessageSeen = true;
+      await newLastMessage.save({ fields: ["lastMessageSeen"] });
+      await newLastMessage.reload();
+      res.json({ status: "success" });
+    } else {
+      res.json({});
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

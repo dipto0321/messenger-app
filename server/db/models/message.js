@@ -15,6 +15,11 @@ const Message = db.define("message", {
     allowNull: false,
     defaultValue: false,
   },
+  lastMessageSeen: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 });
 
 Message.updateAll = async (
@@ -43,6 +48,28 @@ Message.updateAll = async (
     };
   } catch (error) {
     return { updateStatus: "failed" };
+  }
+};
+
+Message.update = async (messageId, updateFiled, updateValue) => {
+  try {
+    const message = await Message.findOne({
+      where: {
+        id: messageId,
+      },
+    });
+    console.log(
+      "🚀 ~ file: message.js ~ line 56 ~ Message.update= ~ message",
+      message
+    );
+    if (message) {
+      message[updateFiled] = updateValue;
+      await message.save({ fields: [updateFiled] });
+      await message.reload();
+    }
+    return message;
+  } catch (error) {
+    return null;
   }
 };
 
