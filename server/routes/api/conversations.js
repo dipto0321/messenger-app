@@ -69,7 +69,7 @@ router.get("/", async (req, res, next) => {
       }
 
       const unReadMessage = convoJSON.messages.reduce((count, msg) => {
-        if (!msg.readStatus) count += 1;
+        if (!msg.readStatus && msg.senderId !== userId) count += 1;
         return count;
       }, 0);
       console.log(
