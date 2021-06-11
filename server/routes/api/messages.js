@@ -17,7 +17,6 @@ router.post("/", async (req, res, next) => {
         senderId,
         text,
         conversationId,
-        readStatus: false,
       });
       return res.json({ message, sender });
     }
@@ -41,7 +40,6 @@ router.post("/", async (req, res, next) => {
       senderId,
       text,
       conversationId: conversation.id,
-      readStatus: false,
     });
     res.json({ message, sender });
   } catch (error) {
