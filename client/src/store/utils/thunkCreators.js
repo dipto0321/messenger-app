@@ -98,11 +98,6 @@ const validConversation = async (reqBody) => {
 };
 
 const sendMessage = async (data, body) => {
-  console.log(
-    "🚀 ~ file: thunkCreators.js ~ line 101 ~ sendMessage ~ data, body",
-    data,
-    body
-  );
   socket.emit("sendMessage", {
     message: data.message,
     recipientId: body.recipientId,
@@ -140,10 +135,7 @@ export const postMessage = (body) => async (dispatch) => {
       senderId: data.message.senderId,
       recipientId: body.recipientId,
     });
-    console.log(
-      "🚀 ~ file: thunkCreators.js ~ line 105 ~ sendMessage ~ isValid",
-      isValid
-    );
+
     if (isValid) {
       sendMessage(data, body);
     }
@@ -168,12 +160,6 @@ export const readAllMessages = (reqBody) => async (dispatch) => {
       reqBody
     );
 
-    console.log(
-      "🚀 ~ file: thunkCreators.js ~ line 168 ~ readAllMessages ~ updateStatus, lastMessageIdByOtherUser",
-      updateStatus,
-      lastMessageIdByOtherUser
-    );
-
     if (
       updateStatus &&
       updateStatus === "success" &&
@@ -183,10 +169,7 @@ export const readAllMessages = (reqBody) => async (dispatch) => {
         lastMessageIdByOtherUser,
         recipientId
       );
-      console.log(
-        "🚀 ~ file: thunkCreators.js ~ line 140 ~ readAllMessages ~ response",
-        response
-      );
+
       socket.emit("read-msg", {
         messageId: lastMessageIdByOtherUser,
         recipientId,

@@ -95,10 +95,6 @@ router.put("/markAllRead", async (req, res, next) => {
 router.put("/updateSeenStatus", async (req, res, next) => {
   try {
     const { messageId, recipientId } = req.query;
-    console.log(
-      "🚀 ~ file: messages.js ~ line 98 ~ router.post ~ req.query",
-      req.query
-    );
 
     const oldLastMessage = await Message.findOne({
       where: {
@@ -106,10 +102,6 @@ router.put("/updateSeenStatus", async (req, res, next) => {
         senderId: recipientId,
       },
     });
-    console.log(
-      "🚀 ~ file: messages.js ~ line 104 ~ router.post ~ oldLastMessage",
-      oldLastMessage
-    );
 
     if (oldLastMessage) {
       oldLastMessage.lastMessageSeen = false;
