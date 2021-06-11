@@ -141,12 +141,17 @@ export const readAllMessages = (reqBody) => async (dispatch) => {
   try {
     const { conversationId, recipientId } = reqBody;
     const {
-      data: { updateStatus },
+      data: { updateStatus, lastMessageIdByOtherUser },
     } = await axios.post(
       `/api/messages/readAllMessages?conversationId=${conversationId}&recipientId=${recipientId}`
     );
 
     if (updateStatus === "success") {
+      socket.emit("read-msg", {
+        messageId: lastMessageIdByOtherUser,
+        recipientId,
+        conversationId,
+      });
       dispatch(updateConversationUnReadCounter(conversationId, 0));
     }
   } catch (error) {

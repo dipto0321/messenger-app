@@ -72,12 +72,15 @@ router.get("/", async (req, res, next) => {
         if (!msg.readStatus && msg.senderId !== userId) count += 1;
         return count;
       }, 0);
-      console.log(
-        "🚀 ~ file: conversations.js ~ line 75 ~ unReadMessage ~ unReadMessage",
-        unReadMessage
-      );
 
       convoJSON.unReadMessage = unReadMessage;
+
+      const lastMessageByOtherUser = convoJSON.messages.filter(
+        (msg) => msg.senderId !== userId
+      )[0];
+      if (lastMessageByOtherUser) {
+        convoJSON.lastMessageIdByOtherUser = lastMessageByOtherUser.id;
+      }
 
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;

@@ -97,3 +97,32 @@ export const updateConversationUnReadCounterInStore = (
     }
   });
 };
+
+export const updateConversationMessageInStore = (
+  state,
+  conversationId,
+  messageId
+) => {
+  return state.map((convo) => {
+    if (convo.id === conversationId) {
+      const index = convo.messages.findIndex((msg) => msg.id === messageId);
+      convo.messages[index] = {
+        ...convo.messages[index],
+        lastMessageSeen: true,
+      };
+
+      return { ...convo };
+    } else {
+      const messageIndex = convo.messages.findIndex(
+        (msg) => msg.lastMessageSeen
+      );
+      if (messageIndex > -1) {
+        convo.messages[messageIndex] = {
+          ...convo.messages[messageIndex],
+          lastMessageSeen: false,
+        };
+      }
+      return convo;
+    }
+  });
+};
