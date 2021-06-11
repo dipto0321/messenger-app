@@ -1,11 +1,11 @@
-import React, { Component } from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
+import { readAllMessages } from "../../store/utils/thunkCreators";
 
-const styles = {
+const useStyles = makeStyles(() => ({
   root: {
     borderRadius: 8,
     height: 80,
@@ -17,39 +17,34 @@ const styles = {
       cursor: "grab",
     },
   },
-};
+}));
 
-class Chat extends Component {
-  handleClick = async (conversation) => {
-    await this.props.setActiveChat(conversation.otherUser.username);
-  };
-
-  render() {
-    const { classes } = this.props;
-    const otherUser = this.props.conversation.otherUser;
-    return (
-      <Box
-        onClick={() => this.handleClick(this.props.conversation)}
-        className={classes.root}
-      >
-        <BadgeAvatar
-          photoUrl={otherUser.photoUrl}
-          username={otherUser.username}
-          online={otherUser.online}
-          sidebar={true}
-        />
-        <ChatContent conversation={this.props.conversation} />
-      </Box>
+const Chat = ({ conversation }) => {
+  const dispatch = useDispatch();
+  const handleClick = async () => {
+    await dispatch(
+      readAllMessages({
+        conversationId: conversation.id,
+        recipientId: conversation.otherUser.id,
+      })
     );
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setActiveChat: (id) => {
-      dispatch(setActiveChat(id));
-    },
+    await dispatch(setActiveChat(conversation.otherUser.username));
   };
+
+  const { root } = useStyles();
+  const { photoUrl, username, online } = conversation.otherUser;
+
+  return (
+    <Box onClick={handleClick} className={root}>
+      <BadgeAvatar
+        photoUrl={photoUrl}
+        username={username}
+        online={online}
+        sidebar={true}
+      />
+      <ChatContent conversation={conversation} />
+    </Box>
+  );
 };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Chat));
+export default Chat;

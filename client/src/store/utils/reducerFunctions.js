@@ -81,3 +81,12 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     }
   });
 };
+
+export const updateConversationUnReadCounterInStore = (
+  state,
+  conversationId
+) => {
+  const index = state.findIndex((convo) => convo.id === conversationId);
+  state[index] = { ...state[index], unReadMessage: 0 };
+  return state;
+};

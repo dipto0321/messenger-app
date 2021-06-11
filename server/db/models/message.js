@@ -17,4 +17,28 @@ const Message = db.define("message", {
   },
 });
 
+Message.updateAll = async (
+  conversationId,
+  recipientId,
+  fieldToUpdate,
+  updateValue
+) => {
+  try {
+    const messages = await Message.findAll({
+      where: {
+        senderId: recipientId,
+        conversationId: conversationId,
+      },
+    });
+    messages.forEach(async (message) => {
+      message[fieldToUpdate] = updateValue;
+      await message.save({ fields: [fieldToUpdate] });
+      await message.reload();
+    });
+    return { updateStatus: "success" };
+  } catch (error) {
+    return { updateStatus: "failed" };
+  }
+};
+
 module.exports = Message;
