@@ -105,14 +105,7 @@ export const updateConversationMessageInStore = (
 ) => {
   return state.map((convo) => {
     if (convo.id === conversationId) {
-      const index = convo.messages.findIndex((msg) => msg.id === messageId);
-      convo.messages[index] = {
-        ...convo.messages[index],
-        lastMessageSeen: true,
-      };
-
-      return { ...convo };
-    } else {
+      // First make  old lastMessageSeen true to false
       const messageIndex = convo.messages.findIndex(
         (msg) => msg.lastMessageSeen
       );
@@ -122,6 +115,15 @@ export const updateConversationMessageInStore = (
           lastMessageSeen: false,
         };
       }
+      // Update new last message
+      const index = convo.messages.findIndex((msg) => msg.id === messageId);
+      convo.messages[index] = {
+        ...convo.messages[index],
+        lastMessageSeen: true,
+      };
+
+      return { ...convo };
+    } else {
       return convo;
     }
   });
