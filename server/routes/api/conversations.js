@@ -68,6 +68,17 @@ router.get("/", async (req, res, next) => {
         convoJSON.otherUser.online = false;
       }
 
+      const unReadMessage = convoJSON.messages.reduce((count, msg) => {
+        if (!msg.readStatus) count += 1;
+        return count;
+      }, 0);
+      console.log(
+        "🚀 ~ file: conversations.js ~ line 75 ~ unReadMessage ~ unReadMessage",
+        unReadMessage
+      );
+
+      convoJSON.unReadMessage = unReadMessage;
+
       // set properties for notification count and latest message preview
       convoJSON.latestMessageText = convoJSON.messages[0].text;
       // Change order of messages
