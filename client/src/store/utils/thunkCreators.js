@@ -107,7 +107,7 @@ const sendMessage = async (data, body) => {
 
 const saveMessageSeen = async (messageId, recipientId) => {
   const { data } = await axios.put(
-    `/api/messages/updateSeenStatus?messageId=${messageId}&recipientId=${recipientId}`
+    `/api/messages/lastMessageSeen?messageId=${messageId}&recipientId=${recipientId}`
   );
   return data;
 };
