@@ -92,7 +92,7 @@ router.put("/markAllRead", async (req, res, next) => {
   }
 });
 
-router.put("/updateSeenStatus", async (req, res, next) => {
+router.put("/lastMessageSeen", async (req, res, next) => {
   try {
     const { messageId, recipientId } = req.query;
 
